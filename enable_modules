@@ -1,0 +1,78 @@
+#!/bin/bash
+rm /etc/php/7.0/fpm/conf.d/*
+rm /etc/php/7.0/cli/conf.d/*
+
+cp /etc/php/7.0/php-production.ini /etc/php/7.0/fpm/php.ini
+cp /etc/php/7.0/php-production.ini /etc/php/7.0/cli/php.ini
+
+IFS=';;;;'
+envs=(`cat /proc/1/environ | xargs -0 -n 1 echo ';;;;'`)
+unset IFS
+
+cd /etc/php/7.0/fpm/conf.d
+for _curVar in "${envs[@]}"
+do
+    value=`echo "$_curVar" | awk -F = '{print $2}'`
+    name=`echo "$_curVar" | awk -F = '{print $1}' | xargs`
+    if [ "$name" == "" ]
+    then
+      continue
+    fi
+    if [ "$name" == "PHP_MODULES" ]
+    then
+      for MODULE in $value; do
+        if [ "$MODULE" == "mysqlnd" ] || [ "$MODULE" == "opcache" ] || [ "$MODULE" == "pdo" ]
+        then
+          ln -s /etc/php/7.0/mods-available/$MODULE.ini 10-$MODULE.ini
+        else
+          if [ "$MODULE" == "xml" ]
+          then
+            ln -s /etc/php/7.0/mods-available/$MODULE.ini 15-$MODULE.ini
+          else
+            ln -s /etc/php/7.0/mods-available/$MODULE.ini 20-$MODULE.ini
+          fi
+        fi
+      done
+    fi
+done
+
+cd /etc/php/7.0/cli/conf.d
+for _curVar in "${envs[@]}"
+do
+    value=`echo "$_curVar" | awk -F = '{print $2}'`
+    name=`echo "$_curVar" | awk -F = '{print $1}' | xargs`
+    if [ "$name" == "" ]
+    then
+      continue
+    fi
+    if [ "$name" == "PHP_MODULES" ]
+    then
+      for MODULE in $value; do
+        if [ "$MODULE" == "mysqlnd" ] || [ "$MODULE" == "opcache" ] || [ "$MODULE" == "pdo" ]
+        then
+          ln -s /etc/php/7.0/mods-available/$MODULE.ini 10-$MODULE.ini
+        else
+          if [ "$MODULE" == "xml" ]
+          then
+            ln -s /etc/php/7.0/mods-available/$MODULE.ini 15-$MODULE.ini
+          else
+            ln -s /etc/php/7.0/mods-available/$MODULE.ini 20-$MODULE.ini
+          fi
+        fi
+      done
+    fi
+    if [ "$name" == "DEBUG" ]
+    then
+      if [ "$value" == "true" ]
+      then
+        mkdir /var/www/html/current
+        chmod 777 /var/www/html/current
+        cp /etc/php/7.0/php-development.ini /etc/php/7.0/fpm/php.ini
+        cp /etc/php/7.0/php-development.ini /etc/php/7.0/cli/php.ini
+      fi
+    fi
+done
+
+if [ -x /init ]; then
+  /init
+fi
