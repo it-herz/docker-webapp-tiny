@@ -1,0 +1,11 @@
+#!/sbin/runscript
+description="PHP-fpm module"
+command="/usr/local/sbin/php-fpm"
+command_args="-D -y /usr/local/etc/php-fpm.conf"
+procname="php-fpm"
+pidfile="/run/php-fpm.pid"
+stopsig="SIGTERM"
+
+depend() {
+  need local
+}

@@ -1,0 +1,48 @@
+#!/bin/bash
+
+export PHP_INI_DIR=/usr/local/etc/php
+
+composer selfupdate
+
+chmod 775 -R /var/www
+chown www-data:www-data -R /var/www
+echo "Applying"
+
+# Function to update the fpm configuration to make the service environment variables available
+function setEnvironmentVariable() {
+ 
+    if [ -z "$2" ]; then
+        return
+    fi
+ 
+    # Check whether variable already exists
+    if grep -q "^env\[$1\]" $PHP_INI_DIR/../php-fpm.d/www.conf; then
+        # Reset variable
+        sed -i "s/^env\[$1.*/env[$1] = \"$2\"/g" $PHP_INI_DIR/../php-fpm.d/www.conf
+    else
+        # Add variable
+        echo "env[$1] = \"$2\"" >> $PHP_INI_DIR/../php-fpm.d/www.conf
+    fi
+}
+
+IFS=';;;;'
+envs=(`cat /proc/1/environ | xargs -0 -n 1 echo ';;;;'`)
+unset IFS
+
+for _curVar in "${envs[@]}"
+do
+    value=`echo "$_curVar" | awk -F = '{print $2}'`
+    name=`echo "$_curVar" | awk -F = '{print $1}' | xargs`
+    if [ "$name" == "" ]
+    then
+      continue
+    fi
+
+    if [ "$name" == "TIMEZONE" ]
+    then
+      sed -i -e "s~;date.timezone\s*=.*~date.timezone=$value~g" /usr/local/etc/php/php.ini
+    fi
+    # awk has split them by the equals sign
+    # Pass the name and value to our function
+    setEnvironmentVariable $name $value
+done
