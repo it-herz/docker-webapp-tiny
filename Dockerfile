@@ -1,4 +1,4 @@
-FROM debian:latest
+FROM ubuntu:latest
 MAINTAINER Dmitrii Zolotov <dzolotov@herzen.spb.ru>
 
 # Install packages
