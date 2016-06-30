@@ -15,7 +15,7 @@ RUN apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db 
     apt-get dist-upgrade -y --allow-unauthenticated && \
     apt-get install -y --allow-unauthenticated mariadb-common php7.0-fpm php7.0-mbstring php7.0-zip php7.0-gd php7.0-mysql php7.0-curl php7.0-opcache php7.0-xsl php7.0-ldap php7.0-redis php7.0-mongo php7.0-imagick php7.0-json php7.0-interbase python-setuptools libmariadbclient18 wget git zip && \
     apt-get clean && \
-    cp /etc/php/mods-available/* /etc/php/7.0/mods-available/ && \
+#    cp /etc/php/mods-available/* /etc/php/7.0/mods-available/ && \
     sed -i 's/listen\s=.*/listen=0.0.0.0:9000/ig' /etc/php/7.0/fpm/pool.d/www.conf && \
     cd /usr/bin && wget https://getcomposer.org/composer.phar && mv composer.phar composer && chmod +x composer && \
     wget http://gordalina.github.io/cachetool/downloads/cachetool.phar && mv cachetool.phar cachetool && chmod +x cachetool && \
