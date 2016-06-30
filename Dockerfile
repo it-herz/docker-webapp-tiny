@@ -37,9 +37,6 @@ ENV TIMEZONE GMT
 ENV PHP_MODULES opcache phar json
 ENV DEBUG false
 
-ADD php-production.ini /usr/local/etc/php/
-ADD php-development.ini /usr/local/etc/php/
-
 EXPOSE 9000
 
 CMD ["supervisord","-n","-c","/etc/supervisord.conf"]
