@@ -9,8 +9,8 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db && \
     echo 'deb http://mirror.mephi.ru/mariadb/repo/10.0/debian jessie main' >>/etc/apt/sources.list.d/mariadb.list && \
     echo 'deb-src http://mirror.mephi.ru/mariadb/repo/10.0/debian jessie main' >>/etc/apt/sources.list.d/mariadb.list && \
-    echo 'deb http://packages.dotdeb.org jessie all' >>/etc/apt/sources.list.d/php7.list && \
-    echo 'deb-src http://packages.dotdeb.org jessie all' >> etc/apt/sources.list.d/php7.list && \
+#    echo 'deb http://packages.dotdeb.org jessie all' >>/etc/apt/sources.list.d/php7.list && \
+#    echo 'deb-src http://packages.dotdeb.org jessie all' >> etc/apt/sources.list.d/php7.list && \
     apt-get update && \
     apt-get dist-upgrade -y --allow-unauthenticated && \
     apt-get install -y --allow-unauthenticated mariadb-common php7.0-fpm php7.0-mbstring php7.0-zip php7.0-gd php7.0-mysql php7.0-curl php7.0-opcache php7.0-xsl php7.0-ldap php7.0-redis php7.0-mongo php7.0-imagick php7.0-json php7.0-interbase python-setuptools libmariadbclient18 wget git zip && \
