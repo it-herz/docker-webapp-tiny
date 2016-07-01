@@ -10,8 +10,9 @@ RUN apt-get update && \
     apt-get install -y software-properties-common && \
     apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 && \
     add-apt-repository 'deb [arch=amd64,i386,ppc64el] http://mirror.mephi.ru/mariadb/repo/10.1/ubuntu xenial main' && \
+    apt-get update && \
     apt-get dist-upgrade -y && \
-    apt-get install -y mariadb-common php7.0 php7.0-cli php7.0-fpm php7.0-mbstring php7.0-zip php7.0-gd php7.0-mysql php7.0-curl php7.0-opcache php7.0-xsl php7.0-ldap php-redis php-imagick php7.0-json php7.0-interbase python-setuptools wget git zip && \
+    apt-get install -y mariadb-common php7.0 php7.0-cli php7.0-fpm php7.0-mbstring php7.0-zip php7.0-gd php7.0-mysql php7.0-curl php7.0-opcache php7.0-xsl php7.0-ldap php-redis php-imagick php7.0-json php7.0-interbase python-setuptools wget git zip libmariadbclient18 && \
     apt-get clean && \
     sed -i 's/listen\s=.*/listen=0.0.0.0:9000/ig' /etc/php/7.0/fpm/pool.d/www.conf && \
     cd /usr/bin && wget https://getcomposer.org/composer.phar && mv composer.phar composer && chmod +x composer && \
