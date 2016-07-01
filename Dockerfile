@@ -36,6 +36,7 @@ VOLUME ["/var/www/html/"]
 ENV TIMEZONE GMT
 ENV PHP_MODULES opcache phar json
 ENV DEBUG false
+ENV DEVUSER www-data
 
 EXPOSE 9000
 

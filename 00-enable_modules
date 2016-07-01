@@ -8,6 +8,7 @@ cp /etc/php/7.0/php-production.ini /etc/php/7.0/cli/php.ini
 IFS=';;;;'
 envs=(`cat /proc/1/environ | xargs -0 -n 1 echo ';;;;'`)
 unset IFS
+useradd $DEVUSER
 
 cd /etc/php/7.0/fpm/conf.d
 for _curVar in "${envs[@]}"
