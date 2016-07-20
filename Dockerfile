@@ -7,7 +7,7 @@ MAINTAINER Dmitrii Zolotov <dzolotov@herzen.spb.ru>
 
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
-    apt-get install -y software-properties-common && \
+    apt-get install -y software-properties-common sudo curl && \
     apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 && \
     add-apt-repository 'deb [arch=amd64,i386,ppc64el] http://mirror.mephi.ru/mariadb/repo/10.1/ubuntu xenial main' && \
     apt-get update && \
