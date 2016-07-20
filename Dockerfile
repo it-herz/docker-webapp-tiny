@@ -66,7 +66,7 @@ RUN	sed -i -e 's/v3\.2/edge/g' /etc/apk/repositories && \
     cd /usr/bin && wget https://getcomposer.org/composer.phar && mv composer.phar composer && chmod +x composer && \
     wget http://gordalina.github.io/cachetool/downloads/cachetool.phar && mv cachetool.phar cachetool && chmod +x cachetool && \
     apk del curl-dev openldap-dev freetype-dev libmemcached-dev sqlite-dev libxslt-dev gmp-dev openssl-dev curl-dev libxml2-dev libedit-dev && \
-    sed -i  's/;pm.status_path = \/status/pm.status_path = \/status/' /usr/local/etc//php-fpm.d/www.conf && umask 002 && chown www-data -R /var/lib/nginx
+    sed -i  's/;pm.status_path = \/status/pm.status_path = \/status/' /usr/local/etc//php-fpm.d/www.conf && umask 002 && chown www-data -R /var/www/html
 
 VOLUME ["/var/www/html"]
 
