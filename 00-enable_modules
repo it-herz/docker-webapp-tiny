@@ -65,6 +65,10 @@ do
     then
       if [ "$value" == "true" ]
       then
+        mkdir -p /var/www/html/release/dev
+        cd /var/www/html/release
+        ln -s dev current
+        chmod 777 /var/www/html/current
         cp /etc/php/7.0/php-development.ini /etc/php/7.0/fpm/php.ini
         cp /etc/php/7.0/php-development.ini /etc/php/7.0/cli/php.ini
       fi
