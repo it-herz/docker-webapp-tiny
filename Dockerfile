@@ -1,4 +1,4 @@
-FROM php:7-fpm-alpine
+FROM php:5.6-fpm-alpine
 
 ADD php-fpm /etc/init.d
 
@@ -57,8 +57,8 @@ RUN	sed -i -e 's/v3\.2/edge/g' /etc/apk/repositories && \
     rc-update add php-fpm sysinit && mkdir -p /run/openrc && touch /run/openrc/softlevel && \
     rc-update add local default && \
     echo "/sbin/rc" >/root/rc && chmod +x /root/rc && \
-    cd /root && git clone https://github.com/php-memcached-dev/php-memcached && cd php-memcached && git checkout php7 && phpize && ./configure --disable-memcached-sasl && make && make install && echo "extension=memcached.so" >>/usr/local/etc/php/conf.d/docker-php-ext-memcached.ini && rm -r /root/php-memcached && \
-    cd /root && git clone https://github.com/phpredis/phpredis && cd phpredis && git checkout php7 && phpize && ./configure && make && make install && echo "extension=redis.so" >>/usr/local/etc/php/conf.d/docker-php-ext-redis.ini && rm -rf /root/phpredis && \
+    cd /root && git clone https://github.com/php-memcached-dev/php-memcached && cd php-memcached && && phpize && ./configure --disable-memcached-sasl && make && make install && echo "extension=memcached.so" >>/usr/local/etc/php/conf.d/docker-php-ext-memcached.ini && rm -r /root/php-memcached && \
+    cd /root && git clone https://github.com/phpredis/phpredis && cd phpredis && && phpize && ./configure && make && make install && echo "extension=redis.so" >>/usr/local/etc/php/conf.d/docker-php-ext-redis.ini && rm -rf /root/phpredis && \
     echo "zend_extension=opcache.so" >/usr/local/etc/php/conf.d/docker-php-ext-opcache.ini && \
     docker-php-ext-install -j4 iconv mcrypt ldap curl pdo_mysql mysqli soap intl gd gmp bcmath mbstring zip pcntl xsl && \
     ln -s /usr/local/bin/php /usr/bin/php && \
