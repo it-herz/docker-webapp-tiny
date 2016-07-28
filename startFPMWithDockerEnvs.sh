@@ -9,4 +9,4 @@ do
   fi
 done
 
-supervisorctl start php7.0-fpm
+supervisorctl start php5.6-fpm
