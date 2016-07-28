@@ -4,7 +4,7 @@ MAINTAINER Dmitrii Zolotov <dzolotov@herzen.spb.ru>
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt update && apt upgrade -y && apt install -y git zlib1g-dev libmemcached-dev libmcrypt-dev libldap2-dev freetds-dev libjpeg-dev libpng-dev libfreetype6-dev libcurl4-gnutls-dev libxml2-dev libicu-dev libgmp3-dev libxslt1-dev wget
+RUN apt update && apt upgrade -y && apt install -y git zlib1g-dev libmemcached-dev libmcrypt-dev libldap2-dev freetds-dev libjpeg-dev libpng-dev libfreetype6-dev libcurl4-gnutls-dev libxml2-dev libicu-dev libgmp3-dev libxslt1-dev wget python-setuptools libssl-dev
 RUN ln -s /usr/include/ldap.h /usr/lib/x86_64-linux-gnu && \
     ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/ && \
     mkdir /root/sybase && mkdir /root/sybase/include && mkdir /root/sybase/lib && \
@@ -19,17 +19,22 @@ RUN ln -s /usr/include/ldap.h /usr/lib/x86_64-linux-gnu && \
     cd /root && git clone https://github.com/php-memcached-dev/php-memcached && cd php-memcached && git checkout php7 && phpize && ./configure --disable-memcached-sasl && make && make install && echo "extension=memcached.so" >>/usr/local/etc/php/conf.d/docker-php-ext-memcached.ini && rm -r /root/php-memcached && \
     cd /root && git clone https://github.com/phpredis/phpredis && cd phpredis && git checkout php7 && phpize && ./configure && make && make install && echo "extension=redis.so" >>/usr/local/etc/php/conf.d/docker-php-ext-redis.ini && rm -rf /root/phpredis && \
     echo "zend_extension=opcache.so" >/usr/local/etc/php/conf.d/docker-php-ext-opcache.ini && \
-    docker-php-ext-install -j4 iconv mcrypt ldap curl pdo_mysql mysqli soap intl gd gmp bcmath mbstring zip pcntl xsl && \
+    echo "extension=phar.so" >/usr/local/etc/php/conf.d/docker-php-ext-phar.ini && \
+    echo "extension=json.so" >/usr/local/etc/php/conf.d/docker-php-ext-json.ini && \
+    docker-php-ext-install -j4 iconv mcrypt ldap curl pdo_mysql mysqli soap intl gd gmp bcmath mbstring zip pcntl xsl json phar pdo_dblib && \
     ln -s /usr/local/bin/php /usr/bin/php && \
     mkdir /root/conf.d && cp -v /usr/local/etc/php/conf.d/* /root/conf.d/ && \
     cd /usr/bin && wget https://getcomposer.org/composer.phar && mv composer.phar composer && chmod +x composer && \
-    wget http://gordalina.github.io/cachetool/downloads/cachetool.phar && mv cachetool.phar cachetool && chmod +x cachetool
+    wget http://gordalina.github.io/cachetool/downloads/cachetool.phar && mv cachetool.phar cachetool && chmod +x cachetool && \
+    rm -rf /var/lib/apt/lists/* && mkdir -p /run/php && mkdir /var/log/supervisor/ && /usr/bin/easy_install supervisor && /usr/bin/easy_install supervisor-stdout && mkdir /etc/container.run/
 
 #setup php-nginx binding
 ADD fastcgi-php.conf /etc/nginx/snippets/fastcgi-php.conf
-ADD startFPMWithDockerEnvs.sh /etc/php/7.0/startFPMWithDockerEnvs.sh
-ADD php-production.ini /etc/php/7.0/
-ADD php-development.ini /etc/php/7.0/
+ADD startFPMWithDockerEnvs.sh /usr/local/etc/php/startFPMWithDockerEnvs.sh
+
+ADD php-production.ini /usr/local/etc/php/
+ADD php-development.ini /usr/local/etc/php/
+
 ADD 00-enable_modules /etc/container-run.d/
 ADD 01-apply_environment /etc/container-run.d/
 
