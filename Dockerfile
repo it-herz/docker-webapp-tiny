@@ -21,6 +21,9 @@ RUN ln -s /usr/include/ldap.h /usr/lib/x86_64-linux-gnu && \
     echo "zend_extension=opcache.so" >/usr/local/etc/php/conf.d/docker-php-ext-opcache.ini && \
     echo "extension=phar.so" >/usr/local/etc/php/conf.d/docker-php-ext-phar.ini && \
     echo "extension=json.so" >/usr/local/etc/php/conf.d/docker-php-ext-json.ini && \
+    echo "extension=curl.so" >/usr/local/etc/php/conf.d/docker-php-ext-curl.ini && \
+    echo "extension=iconv.so" >/usr/local/etc/php/conf.d/docker-php-ext-iconv.ini && \
+    echo "extension=mbstring.so" >/usr/local/etc/php/conf.d/docker-php-ext-mbstring.ini && \
     docker-php-ext-install -j4 iconv mcrypt ldap curl pdo_mysql mysqli soap intl gd gmp bcmath mbstring zip pcntl xsl json phar pdo_dblib && \
     ln -s /usr/local/bin/php /usr/bin/php && \
     mkdir /root/conf.d && cp -v /usr/local/etc/php/conf.d/* /root/conf.d/ && \
