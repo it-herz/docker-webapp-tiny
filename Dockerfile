@@ -1,23 +1,29 @@
-FROM ubuntu:latest
+FROM php:7-fpm
+
 MAINTAINER Dmitrii Zolotov <dzolotov@herzen.spb.ru>
 
-# Install packages
-
-#ADD sources.list /etc/apt/sources.list
-
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update && \
-    apt-get install -y software-properties-common sudo curl && \
-    apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 && \
-    add-apt-repository 'deb [arch=amd64,i386,ppc64el] http://mirror.mephi.ru/mariadb/repo/10.1/ubuntu xenial main' && \
-    apt-get update && \
-    apt-get dist-upgrade -y && \
-    apt-get install -y mariadb-common php7.0 php7.0-cli php7.0-fpm php7.0-mbstring php7.0-zip php7.0-gd php7.0-mysql php7.0-curl php7.0-opcache php7.0-xsl php7.0-ldap php-redis php-imagick php7.0-json php7.0-interbase python-setuptools wget git zip libmariadbclient18 && \
-    apt-get clean && \
-    sed -i 's/listen\s=.*/listen=0.0.0.0:9000/ig' /etc/php/7.0/fpm/pool.d/www.conf && \
+
+RUN apt update && apt upgrade -y && apt install -y git zlib1g-dev libmemcached-dev libmcrypt-dev libldap2-dev freetds-dev libjpeg-dev libpng-dev libfreetype6-dev libcurl4-gnutls-dev libxml2-dev libicu-dev libgmp3-dev libxslt1-dev wget
+RUN ln -s /usr/include/ldap.h /usr/lib/x86_64-linux-gnu && \
+    ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/ && \
+    mkdir /root/sybase && mkdir /root/sybase/include && mkdir /root/sybase/lib && \
+    ln -s /usr/include/syb*.h /root/sybase/include && \
+    ln -s /usr/lib/x86_64-linux-gnu/libsyb* /root/sybase/lib && \
+    docker-php-ext-configure pdo_dblib --with-pdo-dblib=/root/sybase && \
+    docker-php-ext-configure ldap --with-ldap=/usr/lib/x86_64-linux-gnu && \
+    docker-php-ext-configure mysqli --with-mysqli=mysqlnd && \
+    docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd && \
+    docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
+    sed -i 's~;pid.*~pid=/run/php-fpm.pid~ig' /usr/local/etc/php-fpm.conf && \
+    cd /root && git clone https://github.com/php-memcached-dev/php-memcached && cd php-memcached && git checkout php7 && phpize && ./configure --disable-memcached-sasl && make && make install && echo "extension=memcached.so" >>/usr/local/etc/php/conf.d/docker-php-ext-memcached.ini && rm -r /root/php-memcached && \
+    cd /root && git clone https://github.com/phpredis/phpredis && cd phpredis && git checkout php7 && phpize && ./configure && make && make install && echo "extension=redis.so" >>/usr/local/etc/php/conf.d/docker-php-ext-redis.ini && rm -rf /root/phpredis && \
+    echo "zend_extension=opcache.so" >/usr/local/etc/php/conf.d/docker-php-ext-opcache.ini && \
+    docker-php-ext-install -j4 iconv mcrypt ldap curl pdo_mysql mysqli soap intl gd gmp bcmath mbstring zip pcntl xsl && \
+    ln -s /usr/local/bin/php /usr/bin/php && \
+    mkdir /root/conf.d && cp -v /usr/local/etc/php/conf.d/* /root/conf.d/ && \
     cd /usr/bin && wget https://getcomposer.org/composer.phar && mv composer.phar composer && chmod +x composer && \
-    wget http://gordalina.github.io/cachetool/downloads/cachetool.phar && mv cachetool.phar cachetool && chmod +x cachetool && \
-    rm -rf /var/lib/apt/lists/* && mkdir -p /run/php && mkdir /var/log/supervisor/ && /usr/bin/easy_install supervisor && /usr/bin/easy_install supervisor-stdout && mkdir /etc/container.run/
+    wget http://gordalina.github.io/cachetool/downloads/cachetool.phar && mv cachetool.phar cachetool && chmod +x cachetool
 
 #setup php-nginx binding
 ADD fastcgi-php.conf /etc/nginx/snippets/fastcgi-php.conf
