@@ -27,10 +27,10 @@ do
     then
       if [ "$value" == "true" ]
       then
-        mkdir -p /var/www/html/release/dev
-        cd /var/www/html/release
-        ln -s dev current
-        chmod 777 /var/www/html/current
+        #mkdir -p /var/www/html/release/dev
+        #cd /var/www/html/release
+        #ln -s dev current
+        #chmod 777 /var/www/html/current
         cp /usr/local/etc/php/php-development.ini /usr/local/etc/php/php.ini
       fi
     fi
