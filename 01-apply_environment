@@ -33,12 +33,20 @@ unset IFS
 
 echo ${envs[@]}
 
+rm /etc/ssmtp/ssmtp.conf
+
 for _curVar in "${envs[@]}"
 do
     value=`echo "$_curVar" | awk -F= '{print $2}'`
     name=`echo "$_curVar" | awk -F= '{print $1}' | xargs`
     if [ "$name" == "" ]
     then
+      continue
+    fi
+    
+    if [[ $name == SSMTP_* ]]
+    then
+      echo "`echo $name | cut -d'_' -f 2`=$value" >>/etc/ssmtp/ssmtp.conf
       continue
     fi
 
