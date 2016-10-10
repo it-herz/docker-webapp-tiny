@@ -4,7 +4,7 @@ MAINTAINER Dmitrii Zolotov <dzolotov@herzen.spb.ru>
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt update && apt upgrade -y && apt install -y git zlib1g-dev libmemcached-dev libmcrypt-dev libldap2-dev freetds-dev libjpeg-dev libpng-dev libfreetype6-dev libcurl4-gnutls-dev libxml2-dev libicu-dev libgmp3-dev libxslt1-dev wget python-setuptools libssl-dev
+RUN apt update && apt upgrade -y && apt install -y ssmtp git zlib1g-dev libmemcached-dev libmcrypt-dev libldap2-dev freetds-dev libjpeg-dev libpng-dev libfreetype6-dev libcurl4-gnutls-dev libxml2-dev libicu-dev libgmp3-dev libxslt1-dev wget python-setuptools libssl-dev
 
 RUN cd /tmp && \
     wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/firebird-dev_3.0.0.32483.ds4-5_all.deb && \
