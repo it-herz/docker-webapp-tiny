@@ -56,7 +56,7 @@ RUN	sed -i -e 's/v3\.2/edge/g' /etc/apk/repositories && \
     sed -i 's~;pid.*~pid=/run/php-fpm.pid~ig' /usr/local/etc/php-fpm.conf && \
     rc-update add php-fpm sysinit && mkdir -p /run/openrc && touch /run/openrc/softlevel && \
     rc-update add local sysinit && \
-    echo "/sbin/rc" >/root/rc && chmod +x /root/rc && \
+    echo "env | grep _ >> /etc/environment" && echo "/sbin/rc" >> /root/rc && chmod +x /root/rc && \
     cd /root && git clone https://github.com/php-memcached-dev/php-memcached && cd php-memcached && git checkout php7 && phpize && ./configure --disable-memcached-sasl && make && make install && echo "extension=memcached.so" >>/usr/local/etc/php/conf.d/docker-php-ext-memcached.ini && rm -r /root/php-memcached && \
     cd /root && git clone https://github.com/phpredis/phpredis && cd phpredis && git checkout php7 && phpize && ./configure && make && make install && echo "extension=redis.so" >>/usr/local/etc/php/conf.d/docker-php-ext-redis.ini && rm -rf /root/phpredis && \
     echo "zend_extension=opcache.so" >/usr/local/etc/php/conf.d/docker-php-ext-opcache.ini && \
