@@ -60,6 +60,7 @@ RUN	sed -i -e 's/v3\.2/edge/g' /etc/apk/repositories && \
     cd /root && git clone https://github.com/php-memcached-dev/php-memcached && cd php-memcached && git checkout php7 && phpize && ./configure --disable-memcached-sasl && make && make install && echo "extension=memcached.so" >>/usr/local/etc/php/conf.d/docker-php-ext-memcached.ini && rm -r /root/php-memcached && \
     cd /root && git clone https://github.com/phpredis/phpredis && cd phpredis && git checkout php7 && phpize && ./configure && make && make install && echo "extension=redis.so" >>/usr/local/etc/php/conf.d/docker-php-ext-redis.ini && rm -rf /root/phpredis && \
     echo "zend_extension=opcache.so" >/usr/local/etc/php/conf.d/docker-php-ext-opcache.ini && \
+    cd /root && git clone https://github.com/mongodb/mongo-php-driver.git && cd mongo-php-driver && git submodule sync && git submodule update --init && phpize && ./configure && make all -j 5 && sudo make install && rm -r /root/mongo-php-driver && echo "extension=mongodb.so" > /usr/local/etc/php/conf.d/docker-php-ext-mongodb.ini && \
     docker-php-ext-install -j4 iconv mcrypt ldap curl pdo_mysql mysqli soap intl gd gmp bcmath mbstring zip pcntl xsl && \
     ln -s /usr/local/bin/php /usr/bin/php && \
     mkdir /root/conf.d && cp -v /usr/local/etc/php/conf.d/* /root/conf.d/ && \
