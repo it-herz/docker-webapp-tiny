@@ -30,6 +30,7 @@ RUN ln -s /usr/include/ldap.h /usr/lib/x86_64-linux-gnu && \
     echo "extension=pdo.so" >/usr/local/etc/php/conf.d/docker-php-ext-pdo.ini && \
     echo "extension=pdo_firebird.so" >/usr/local/etc/php/conf.d/docker-php-ext-pdo_firebird.ini && \
     echo "extension=ctype.so" >/usr/local/etc/php/conf.d/docker-php-ext-ctype.ini && \
+    echo "extension=mysql.so" >/usr/local/etc/php/conf.d/docker-php-ext-mysql.ini && \
     ln -s /usr/local/bin/php /usr/bin/php && \
     mkdir /root/conf.d && cp -v /usr/local/etc/php/conf.d/* /root/conf.d/ && \
     cd /usr/bin && wget https://getcomposer.org/composer.phar && mv composer.phar composer && chmod +x composer && \
@@ -43,8 +44,7 @@ ADD startFPMWithDockerEnvs.sh /usr/local/etc/php/startFPMWithDockerEnvs.sh
 ADD php-production.ini /usr/local/etc/php/
 ADD php-development.ini /usr/local/etc/php/
 
-ADD 00-enable_modules /etc/container-run.d/
-ADD 01-apply_environment /etc/container-run.d/
+ADD 00-enable_modules /etc/container-run.d/ ADD 01-apply_environment /etc/container-run.d/
 
 # Supervisor Config
 ADD supervisord.conf /etc/supervisord.conf
