@@ -13,6 +13,7 @@ RUN ln -s /usr/include/ldap.h /usr/lib/x86_64-linux-gnu && \
     docker-php-ext-configure pdo_dblib --with-pdo-dblib=/root/sybase && \
     docker-php-ext-configure ldap --with-ldap=/usr/lib/x86_64-linux-gnu && \
     docker-php-ext-configure mysqli --with-mysqli=mysqlnd && \
+    docker-php-ext-configure mysql && \
     docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd && \
     docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
     sed -i 's~;pid.*~pid=/run/php-fpm.pid~ig' /usr/local/etc/php-fpm.conf && \
