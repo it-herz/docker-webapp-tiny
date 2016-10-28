@@ -35,7 +35,7 @@ RUN ln -s /usr/include/ldap.h /usr/lib/x86_64-linux-gnu && \
     mkdir /root/conf.d && cp -v /usr/local/etc/php/conf.d/* /root/conf.d/ && \
     cd /usr/bin && wget https://getcomposer.org/composer.phar && mv composer.phar composer && chmod +x composer && \
     wget http://gordalina.github.io/cachetool/downloads/cachetool.phar && mv cachetool.phar cachetool && chmod +x cachetool && \
-    rm -rf /var/lib/apt/lists/* && mkdir -p /run/php && mkdir /var/log/supervisor/ && /usr/bin/easy_install supervisor && /usr/bin/easy_install supervisor-stdout && mkdir /etc/container.run.d/
+    rm -rf /var/lib/apt/lists/* && mkdir -p /run/php && mkdir /var/log/supervisor/ && /usr/bin/easy_install supervisor && /usr/bin/easy_install supervisor-stdout && mkdir /etc/container.run
 
 #setup php-nginx binding
 ADD fastcgi-php.conf /etc/nginx/snippets/fastcgi-php.conf
@@ -44,7 +44,8 @@ ADD startFPMWithDockerEnvs.sh /usr/local/etc/php/startFPMWithDockerEnvs.sh
 ADD php-production.ini /usr/local/etc/php/
 ADD php-development.ini /usr/local/etc/php/
 
-ADD 00-enable_modules /etc/container-run.d/ ADD 01-apply_environment /etc/container-run.d/
+ADD 00-enable_modules /etc/container-run.d/
+ADD 01-apply_environment /etc/container-run.d/
 
 # Supervisor Config
 ADD supervisord.conf /etc/supervisord.conf
