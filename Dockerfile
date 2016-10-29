@@ -10,7 +10,6 @@ RUN ln -s /usr/include/ldap.h /usr/lib/x86_64-linux-gnu && \
     mkdir /root/sybase && mkdir /root/sybase/include && mkdir /root/sybase/lib && \
     ln -s /usr/include/syb*.h /root/sybase/include && \
     ln -s /usr/lib/x86_64-linux-gnu/libsyb* /root/sybase/lib && \
-    docker-php-ext-install mysql && \
     docker-php-ext-configure pdo_dblib --with-pdo-dblib=/root/sybase && \
     docker-php-ext-configure ldap --with-ldap=/usr/lib/x86_64-linux-gnu && \
     docker-php-ext-configure mysqli --with-mysqli=mysqlnd && \
@@ -20,7 +19,7 @@ RUN ln -s /usr/include/ldap.h /usr/lib/x86_64-linux-gnu && \
     sed -i 's~;pid.*~pid=/run/php-fpm.pid~ig' /usr/local/etc/php-fpm.conf && \
     cd /root && git clone https://github.com/php-memcached-dev/php-memcached && cd php-memcached && phpize && ./configure --disable-memcached-sasl && make && make install && echo "extension=memcached.so" >>/usr/local/etc/php/conf.d/docker-php-ext-memcached.ini && rm -r /root/php-memcached && \
     cd /root && git clone https://github.com/phpredis/phpredis && cd phpredis && phpize && ./configure && make && make install && echo "extension=redis.so" >>/usr/local/etc/php/conf.d/docker-php-ext-redis.ini && rm -rf /root/phpredis && \
-    docker-php-ext-install -j4 pdo interbase ctype iconv mcrypt ldap curl pdo_mysql mysqli soap intl gd gmp bcmath mbstring zip pcntl xsl json phar pdo_dblib pdo_firebird && \
+    docker-php-ext-install -j4 pdo interbase ctype iconv mcrypt ldap curl pdo_mysql mysqli soap intl gd gmp bcmath mbstring zip pcntl xsl json phar pdo_dblib pdo_firebird mysql && \
     echo "zend_extension=opcache.so" >/usr/local/etc/php/conf.d/docker-php-ext-opcache.ini && \
     echo "extension=phar.so" >/usr/local/etc/php/conf.d/docker-php-ext-phar.ini && \
     echo "extension=json.so" >/usr/local/etc/php/conf.d/docker-php-ext-json.ini && \
