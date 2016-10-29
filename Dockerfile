@@ -10,6 +10,7 @@ RUN ln -s /usr/include/ldap.h /usr/lib/x86_64-linux-gnu && \
     mkdir /root/sybase && mkdir /root/sybase/include && mkdir /root/sybase/lib && \
     ln -s /usr/include/syb*.h /root/sybase/include && \
     ln -s /usr/lib/x86_64-linux-gnu/libsyb* /root/sybase/lib && \
+    docker-php-ext-install mysql && \
     docker-php-ext-configure pdo_dblib --with-pdo-dblib=/root/sybase && \
     docker-php-ext-configure ldap --with-ldap=/usr/lib/x86_64-linux-gnu && \
     docker-php-ext-configure mysqli --with-mysqli=mysqlnd && \
