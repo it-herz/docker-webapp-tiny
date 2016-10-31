@@ -4,7 +4,18 @@ MAINTAINER Dmitrii Zolotov <dzolotov@herzen.spb.ru>
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt update && apt upgrade -y && apt install -y git zlib1g-dev libmemcached-dev libmcrypt-dev libldap2-dev freetds-dev libjpeg-dev libpng-dev libfreetype6-dev libcurl4-gnutls-dev libxml2-dev libicu-dev libgmp3-dev libxslt1-dev wget python-setuptools libssl-dev firebird-dev
+RUN cd /tmp && \
+    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/firebird-dev_3.0.1.32609.ds4-8_amd64.deb && \
+    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/libfbclient2_3.0.1.32609.ds4-8_amd64.deb && \
+    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/firebird3.0-common_3.0.1.32609.ds4-8_all.deb && \
+    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/firebird3.0-common-doc_3.0.1.32609.ds4-8_all.deb && \
+    wget http://ftp.ru.debian.org/debian/pool/main/libt/libtommath/libtommath1_1.0-3_amd64.deb && \
+    wget http://ftp.ru.debian.org/debian/pool/main/n/ncurses/libtinfo5_6.0+20160917-1_amd64.deb && \
+    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/libib-util_3.0.1.32609.ds4-8_amd64.deb && \
+    dpkg -i *.deb
+
+
+RUN apt update && apt upgrade -y && apt install -y ssmtp git zlib1g-dev libmemcached-dev libmcrypt-dev libldap2-dev freetds-dev libjpeg-dev libpng-dev libfreetype6-dev libcurl4-gnutls-dev libxml2-dev libicu-dev libgmp3-dev libxslt1-dev wget python-setuptools libssl-dev firebird-dev
 RUN ln -s /usr/include/ldap.h /usr/lib/x86_64-linux-gnu && \
     ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/ && \
     mkdir /root/sybase && mkdir /root/sybase/include && mkdir /root/sybase/lib && \
