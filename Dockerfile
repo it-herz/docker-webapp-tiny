@@ -22,6 +22,7 @@ RUN ln -s /usr/include/ldap.h /usr/lib/x86_64-linux-gnu && \
     ln -s /usr/include/syb*.h /root/sybase/include && \
     ln -s /usr/lib/x86_64-linux-gnu/libsyb* /root/sybase/lib && \
     docker-php-ext-configure pdo_dblib --with-pdo-dblib=/root/sybase && \
+    docker-php-ext-configure imap && \
     docker-php-ext-configure ldap --with-ldap=/usr/lib/x86_64-linux-gnu && \
     docker-php-ext-configure mysqli --with-mysqli=mysqlnd && \
     docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd && \
@@ -40,6 +41,7 @@ RUN ln -s /usr/include/ldap.h /usr/lib/x86_64-linux-gnu && \
     echo "extension=pdo.so" >/usr/local/etc/php/conf.d/docker-php-ext-pdo.ini && \
     echo "extension=pdo_firebird.so" >/usr/local/etc/php/conf.d/docker-php-ext-pdo_firebird.ini && \
     echo "extension=ctype.so" >/usr/local/etc/php/conf.d/docker-php-ext-ctype.ini && \
+    echo "extension=imap.so" >/usr/local/etc/php/conf.d/docker-php-ext-imap.ini && \
     ln -s /usr/local/bin/php /usr/bin/php && \
     mkdir /root/conf.d && cp -v /usr/local/etc/php/conf.d/* /root/conf.d/ && \
     cd /usr/bin && wget https://getcomposer.org/composer.phar && mv composer.phar composer && chmod +x composer && \
