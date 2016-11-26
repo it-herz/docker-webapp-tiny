@@ -4,17 +4,19 @@ MAINTAINER Dmitrii Zolotov <dzolotov@herzen.spb.ru>
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt update && apt upgrade -y && apt install -y ssmtp git zlib1g-dev libmemcached-dev libmcrypt-dev libldap2-dev freetds-dev libjpeg-dev libpng-dev libfreetype6-dev libcurl4-gnutls-dev libxml2-dev libicu-dev libgmp3-dev libxslt1-dev wget python-setuptools libssl-dev
+RUN apt update && apt upgrade -y && apt install -y ssmtp git zlib1g-dev libmemcached-dev libmcrypt-dev libldap2-dev freetds-dev libjpeg-dev libpng-dev libfreetype6-dev libcurl4-gnutls-dev libxml2-dev libicu-dev libgmp3-dev libxslt1-dev wget python-setuptools libssl-dev libc-client-dev libkrb5-dev 
 
 RUN cd /tmp && \
-    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/firebird-dev_3.0.1.32609.ds4-8_amd64.deb && \
-    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/libfbclient2_3.0.1.32609.ds4-8_amd64.deb && \
-    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/firebird3.0-common_3.0.1.32609.ds4-8_all.deb && \
-    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/firebird3.0-common-doc_3.0.1.32609.ds4-8_all.deb && \
+    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/firebird-dev_3.0.1.32609.ds4-10_amd64.deb && \
+    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/libfbclient2_3.0.1.32609.ds4-10_amd64.deb && \
+    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/firebird3.0-common_3.0.1.32609.ds4-10_all.deb && \
+    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/firebird3.0-common-doc_3.0.1.32609.ds4-10_all.deb && \
     wget http://ftp.ru.debian.org/debian/pool/main/libt/libtommath/libtommath1_1.0-3_amd64.deb && \
     wget http://ftp.ru.debian.org/debian/pool/main/n/ncurses/libtinfo5_6.0+20160917-1_amd64.deb && \
-    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/libib-util_3.0.1.32609.ds4-8_amd64.deb && \
+    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/libib-util_3.0.1.32609.ds4-10_amd64.deb && \
     dpkg -i *.deb
+
+#    docker-php-ext-configure imap && \
 
 RUN ln -s /usr/include/ldap.h /usr/lib/x86_64-linux-gnu && \
     ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/ && \
@@ -22,15 +24,15 @@ RUN ln -s /usr/include/ldap.h /usr/lib/x86_64-linux-gnu && \
     ln -s /usr/include/syb*.h /root/sybase/include && \
     ln -s /usr/lib/x86_64-linux-gnu/libsyb* /root/sybase/lib && \
     docker-php-ext-configure pdo_dblib --with-pdo-dblib=/root/sybase && \
-    docker-php-ext-configure imap && \
     docker-php-ext-configure ldap --with-ldap=/usr/lib/x86_64-linux-gnu && \
+    docker-php-ext-configure imap --with-kerberos --with-imap-ssl && \
     docker-php-ext-configure mysqli --with-mysqli=mysqlnd && \
     docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd && \
     docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
     sed -i 's~;pid.*~pid=/run/php-fpm.pid~ig' /usr/local/etc/php-fpm.conf && \
     cd /root && git clone https://github.com/php-memcached-dev/php-memcached && cd php-memcached && git checkout php7 && phpize && ./configure --disable-memcached-sasl && make && make install && echo "extension=memcached.so" >>/usr/local/etc/php/conf.d/docker-php-ext-memcached.ini && rm -r /root/php-memcached && \
     cd /root && git clone https://github.com/phpredis/phpredis && cd phpredis && git checkout php7 && phpize && ./configure && make && make install && echo "extension=redis.so" >>/usr/local/etc/php/conf.d/docker-php-ext-redis.ini && rm -rf /root/phpredis && \
-    docker-php-ext-install -j4 pdo interbase ctype iconv mcrypt ldap curl pdo_mysql mysqli soap intl gd gmp bcmath mbstring zip pcntl xsl json phar pdo_dblib pdo_firebird && \
+    docker-php-ext-install -j4 pdo interbase ctype iconv mcrypt ldap curl pdo_mysql mysqli soap intl gd gmp bcmath mbstring zip pcntl xsl json phar pdo_dblib pdo_firebird imap && \
     echo "zend_extension=opcache.so" >/usr/local/etc/php/conf.d/docker-php-ext-opcache.ini && \
     echo "extension=phar.so" >/usr/local/etc/php/conf.d/docker-php-ext-phar.ini && \
     echo "extension=json.so" >/usr/local/etc/php/conf.d/docker-php-ext-json.ini && \
