@@ -12,7 +12,7 @@ RUN cd /tmp && \
     wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/firebird3.0-common_3.0.1.32609.ds4-10_all.deb && \
     wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/firebird3.0-common-doc_3.0.1.32609.ds4-10_all.deb && \
     wget http://ftp.ru.debian.org/debian/pool/main/libt/libtommath/libtommath1_1.0-3_amd64.deb && \
-    wget http://ftp.ru.debian.org/debian/pool/main/n/ncurses/libtinfo5_6.0+20160917-1_amd64.deb && \
+    wget http://ftp.ru.debian.org/debian/pool/main/n/ncurses/libtinfo-dev_5.9+20140913-1%2bb1_amd64.deb && \
     wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/libib-util_3.0.1.32609.ds4-10_amd64.deb && \
     dpkg -i *.deb
 
