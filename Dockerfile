@@ -3,6 +3,9 @@ FROM php:7-fpm
 MAINTAINER Dmitrii Zolotov <dzolotov@herzen.spb.ru>
 
 ENV DEBIAN_FRONTEND noninteractive
+ENV CFLAGS=""
+ENV CPPFLAGS=""
+ENV LDFLAGS=""
 
 RUN apt update && apt upgrade -y && apt install -y ssmtp git zlib1g-dev libmemcached-dev libmcrypt-dev libldap2-dev freetds-dev libjpeg-dev libpng-dev libfreetype6-dev libcurl4-gnutls-dev libxml2-dev libicu-dev libgmp3-dev libxslt1-dev wget python-setuptools libssl-dev libc-client-dev libc-client2007e libkrb5-dev 
 
