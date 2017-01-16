@@ -4,8 +4,11 @@ MAINTAINER Dmitrii Zolotov <dzolotov@herzen.spb.ru>
 
 ENV DEBIAN_FRONTEND noninteractive
 
-
 RUN apt update && apt upgrade -y && apt install -y ssmtp git zlib1g-dev libmemcached-dev libmcrypt-dev libldap2-dev freetds-dev libjpeg-dev libpng-dev libfreetype6-dev libcurl4-gnutls-dev libxml2-dev libicu-dev libgmp3-dev libxslt1-dev wget python-setuptools libssl-dev
+
+RUN apt install -y build-essential automake libpcre++-dev bison && cd /tmp && git clone https://github.com/swig/swig.git && cd swig && ./autogen.sh && ./configure --prefix=/usr && make && make install
+
+RUN apt install -y cmake && cd /tmp && wget http://apache.claz.org/qpid/proton/0.16.0/qpid-proton-0.16.0.tar.gz && tar xzpf qpid-proton* && cd qpid-proton* && mkdir build && cd build && cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DSYSINSTALL_BINDINGS=OFF -DSYSINSTALL_PHP=ON && make && make install
 
 RUN cd /tmp && \
     wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/firebird-dev_3.0.1.32609.ds4-12_amd64.deb && \
@@ -19,6 +22,7 @@ RUN cd /tmp && \
     wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/libib-util_3.0.1.32609.ds4-12_amd64.deb && \
     dpkg -i *.deb
 
+
 RUN ln -s /usr/include/ldap.h /usr/lib/x86_64-linux-gnu && \
     ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/ && \
     mkdir /root/sybase && mkdir /root/sybase/include && mkdir /root/sybase/lib && \
@@ -31,7 +35,7 @@ RUN ln -s /usr/include/ldap.h /usr/lib/x86_64-linux-gnu && \
     docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd && \
     docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
     sed -i 's~;pid.*~pid=/run/php-fpm.pid~ig' /usr/local/etc/php-fpm.conf && \
-    cd /root && git clone https://github.com/php-memcached-dev/php-memcached && cd php-memcached && phpize && ./configure --disable-memcached-sasl && make && make install && echo "extension=memcached.so" >>/usr/local/etc/php/conf.d/docker-php-ext-memcached.ini && rm -r /root/php-memcached && \
+    cd /root && git clone https://github.com/php-memcached-dev/php-memcached && cd php-memcached && git checkout REL2_0 && phpize && ./configure --disable-memcached-sasl && make && make install && echo "extension=memcached.so" >>/usr/local/etc/php/conf.d/docker-php-ext-memcached.ini && rm -r /root/php-memcached && \
     cd /root && git clone https://github.com/phpredis/phpredis && cd phpredis && phpize && ./configure && make && make install && echo "extension=redis.so" >>/usr/local/etc/php/conf.d/docker-php-ext-redis.ini && rm -rf /root/phpredis && \
     docker-php-ext-install -j4 pdo interbase ctype iconv mcrypt ldap curl pdo_mysql mysqli soap intl gd gmp bcmath mbstring zip pcntl xsl json phar pdo_dblib pdo_firebird mysql && \
     echo "zend_extension=opcache.so" >/usr/local/etc/php/conf.d/docker-php-ext-opcache.ini && \
