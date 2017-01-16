@@ -50,8 +50,8 @@ RUN ln -s /usr/include/ldap.h /usr/lib/x86_64-linux-gnu && \
     echo "extension=ctype.so" >/usr/local/etc/php/conf.d/docker-php-ext-ctype.ini && \
     echo "extension=mysql.so" >/usr/local/etc/php/conf.d/docker-php-ext-mysql.ini && \
     ln -s /usr/local/bin/php /usr/bin/php && \
-    mv /usr/local/etc/php/conf.d/proton.ini /root/conf.d/docker-php-ext-proton.ini && \
-    mkdir /root/conf.d && cp -v /usr/local/etc/php/conf.d/* /root/conf.d/ && \
+    mkdir /root/conf.d && mv /usr/local/etc/php/conf.d/proton.ini /root/conf.d/docker-php-ext-proton.ini && \
+    cp -v /usr/local/etc/php/conf.d/* /root/conf.d/ && \
     cd /usr/bin && wget https://getcomposer.org/composer.phar && mv composer.phar composer && chmod +x composer && \
     wget http://gordalina.github.io/cachetool/downloads/cachetool.phar && mv cachetool.phar cachetool && chmod +x cachetool && \
     rm -rf /var/lib/apt/lists/* && mkdir -p /run/php && mkdir /var/log/supervisor/ && /usr/bin/easy_install supervisor && /usr/bin/easy_install supervisor-stdout && mkdir /etc/container.run
