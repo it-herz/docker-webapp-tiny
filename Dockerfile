@@ -1,4 +1,4 @@
-FROM php:5.6-fpm
+FiFROM php:5.6-fpm
 
 MAINTAINER Dmitrii Zolotov <dzolotov@herzen.spb.ru>
 
@@ -6,10 +6,12 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt update && apt upgrade -y && apt install -y ssmtp git zlib1g-dev libmemcached-dev libmcrypt-dev libldap2-dev freetds-dev libjpeg-dev libpng-dev libfreetype6-dev libcurl4-gnutls-dev libxml2-dev libicu-dev libgmp3-dev libxslt1-dev wget python-setuptools libssl-dev
 
-RUN apt install -y build-essential automake libpcre++-dev bison && cd /tmp && git clone https://github.com/swig/swig.git && cd swig && ./autogen.sh && ./configure --prefix=/usr && make && make install
+RUN apt install -y cmake clang build-essential automake libpcre++-dev bison && cd /tmp && git clone https://github.com/swig/swig.git && cd swig && ./autogen.sh && ./configure --prefix=/usr && make && make install
 
-RUN apt install -y cmake && cd /tmp && wget http://apache.claz.org/qpid/proton/0.16.0/qpid-proton-0.16.0.tar.gz && tar xzpf qpid-proton* && cd qpid-proton* && mkdir build && cd build && cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DSYSINSTALL_BINDINGS=OFF -DSYSINSTALL_PHP=ON && make && make install
-
+RUN cd /tmp && mkdir proton && cd proton && wget https://dist.apache.org/repos/dist/release/qpid/proton/0.16.0/qpid-proton-0.16.0.tar.gz && tar xzvpf qpid-proton* && \
+    cd qpid-proton* && mkdir build && cd build && CXX=clang++ CC=clang cmake -DCMAKE_CXX_FLAGS=-std=c++11 -DSYSINSTALL_BINDINGS=ON -DCMAKE_INSTALL_PREFIX=/usr .. && \
+    make && make install && rm -rf /tmp/proton
+    
 RUN cd /tmp && \
     wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/firebird-dev_3.0.1.32609.ds4-12_amd64.deb && \
     wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/libfbclient2_3.0.1.32609.ds4-12_amd64.deb && \
@@ -20,8 +22,7 @@ RUN cd /tmp && \
     wget http://ftp.ru.debian.org/debian/pool/main/n/ncurses/libncurses5_6.0+20161126-1_amd64.deb && \
     wget http://ftp.ru.debian.org/debian/pool/main/n/ncurses/libncursesw5_6.0+20161126-1_amd64.deb && \
     wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/libib-util_3.0.1.32609.ds4-12_amd64.deb && \
-    dpkg -i *.deb
-
+    dpkg -i *.deb && rm *.deb
 
 RUN ln -s /usr/include/ldap.h /usr/lib/x86_64-linux-gnu && \
     ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/ && \
