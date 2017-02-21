@@ -44,7 +44,8 @@ RUN	sed -i -e 's/v3\.2/edge/g' /etc/apk/repositories && \
         libldap \
 	make \
 	pkgconf \
-	re2c && \
+	re2c \
+	ssmtp && \
     sed -i 's/#rc_sys=""/rc_sys="lxc"/g' /etc/rc.conf && \
     echo 'rc_provide="loopback net"' >> /etc/rc.conf && \
     sed -i 's/^#\(rc_logger="YES"\)$/\1/' /etc/rc.conf && \
