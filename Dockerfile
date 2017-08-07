@@ -10,15 +10,15 @@ ENV LDFLAGS=""
 RUN apt update && apt upgrade -y && apt install -y ssmtp git zlib1g-dev libmemcached-dev libmcrypt-dev libldap2-dev freetds-dev libjpeg-dev libpng-dev libfreetype6-dev libcurl4-gnutls-dev libxml2-dev libicu-dev libgmp3-dev libxslt1-dev wget python-setuptools libssl-dev libc-client-dev libc-client2007e libkrb5-dev 
 
 RUN cd /tmp && \
-    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/firebird-dev_3.0.1.32609.ds4-11_amd64.deb && \
-    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/libfbclient2_3.0.1.32609.ds4-11_amd64.deb && \
-    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/firebird3.0-common_3.0.1.32609.ds4-11_all.deb && \
-    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/firebird3.0-common-doc_3.0.1.32609.ds4-11_all.deb && \
-    wget http://ftp.ru.debian.org/debian/pool/main/libt/libtommath/libtommath1_1.0-3_amd64.deb && \
-    wget http://ftp.ru.debian.org/debian/pool/main/n/ncurses/libtinfo5_6.0+20161126-1_amd64.deb && \
-    wget http://ftp.ru.debian.org/debian/pool/main/n/ncurses/libncurses5_6.0+20161126-1_amd64.deb && \
-    wget http://ftp.ru.debian.org/debian/pool/main/n/ncurses/libncursesw5_6.0+20161126-1_amd64.deb && \
-    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/libib-util_3.0.1.32609.ds4-11_amd64.deb && \
+    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/firebird-dev_3.0.2.32703.ds4-14_amd64.deb && \
+    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/libfbclient2_3.0.2.32703.ds4-14_amd64.deb && \
+    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/firebird3.0-common_3.0.2.32703.ds4-14_all.deb && \
+    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/firebird3.0-common-doc_3.0.2.32703.ds4-14_all.deb && \
+    wget http://ftp.ru.debian.org/debian/pool/main/libt/libtommath/libtommath1_1.0-4_amd64.deb && \
+    wget http://ftp.ru.debian.org/debian/pool/main/n/ncurses/libtinfo5_6.0+20170715-2_amd64.deb && \
+    wget http://ftp.ru.debian.org/debian/pool/main/n/ncurses/libncurses5_6.0+20170715-2_amd64.deb && \
+    wget http://ftp.ru.debian.org/debian/pool/main/n/ncurses/libncursesw5_6.0+20170715-2_amd64.deb && \
+    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/libib-util_3.0.2.32703.ds4-14_amd64.deb && \
     dpkg -i *.deb
 
 #    docker-php-ext-configure imap && \
