@@ -13,15 +13,15 @@ RUN cd /tmp && mkdir proton && cd proton && wget https://dist.apache.org/repos/d
     make && make install && rm -rf /tmp/proton
     
 RUN cd /tmp && \
-    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/firebird-dev_3.0.1.32609.ds4-12_amd64.deb && \
-    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/libfbclient2_3.0.1.32609.ds4-12_amd64.deb && \
-    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/firebird3.0-common_3.0.1.32609.ds4-12_all.deb && \
-    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/firebird3.0-common-doc_3.0.1.32609.ds4-12_all.deb && \
-    wget http://ftp.ru.debian.org/debian/pool/main/libt/libtommath/libtommath1_1.0-3_amd64.deb && \
-    wget http://ftp.ru.debian.org/debian/pool/main/n/ncurses/libtinfo5_6.0+20161126-1_amd64.deb && \
-    wget http://ftp.ru.debian.org/debian/pool/main/n/ncurses/libncurses5_6.0+20161126-1_amd64.deb && \
-    wget http://ftp.ru.debian.org/debian/pool/main/n/ncurses/libncursesw5_6.0+20161126-1_amd64.deb && \
-    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/libib-util_3.0.1.32609.ds4-12_amd64.deb && \
+    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/firebird-dev_3.0.2.32703.ds4-14_amd64.deb && \
+    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/libfbclient2_3.0.2.32703.ds4-14_amd64.deb && \
+    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/firebird3.0-common_3.0.2.32703.ds4-14_all.deb && \
+    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/firebird3.0-common-doc_3.0.2.32703.ds4-14_all.deb && \
+    wget http://ftp.ru.debian.org/debian/pool/main/libt/libtommath/libtommath1_1.0.4_amd64.deb && \
+    wget http://ftp.ru.debian.org/debian/pool/main/n/ncurses/libtinfo5_6.0+20171125-1_amd64.deb && \
+    wget http://ftp.ru.debian.org/debian/pool/main/n/ncurses/libncurses5_6.0+20171125-1_amd64.deb && \
+    wget http://ftp.ru.debian.org/debian/pool/main/n/ncurses/libncursesw5_6.0%2B20171125-1_amd64.deb && \
+    wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/libib-util_3.0.2.32703.ds4-14_amd64.deb && \
     dpkg -i *.deb && rm *.deb
 
 RUN ln -s /usr/include/ldap.h /usr/lib/x86_64-linux-gnu && \
