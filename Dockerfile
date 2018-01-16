@@ -20,7 +20,7 @@ RUN cd /tmp && \
     wget http://ftp.ru.debian.org/debian/pool/main/libt/libtommath/libtommath1_1.0.4_amd64.deb && \
     wget http://ftp.ru.debian.org/debian/pool/main/n/ncurses/libtinfo5_6.0+20171125-1_amd64.deb && \
     wget http://ftp.ru.debian.org/debian/pool/main/n/ncurses/libncurses5_6.0+20171125-1_amd64.deb && \
-    wget http://ftp.ru.debian.org/debian/pool/main/n/ncurses/libncursesw5_6.0%2B20171125-1_amd64.deb && \
+    wget http://ftp.ru.debian.org/debian/pool/main/n/ncurses/libncursesw5_6.0+20171125-1_amd64.deb && \
     wget http://ftp.ru.debian.org/debian/pool/main/f/firebird3.0/libib-util_3.0.2.32703.ds4-14_amd64.deb && \
     dpkg -i *.deb && rm *.deb
 
